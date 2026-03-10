@@ -1,0 +1,2 @@
+/usr/bin/ar qc libTXGrid.a CMakeFiles/TXGrid.dir/src/grid_system.cpp.o CMakeFiles/TXGrid.dir/src/grid_utils.cpp.o CMakeFiles/TXGrid.dir/src/coord_map.cpp.o
+/usr/bin/ranlib libTXGrid.a

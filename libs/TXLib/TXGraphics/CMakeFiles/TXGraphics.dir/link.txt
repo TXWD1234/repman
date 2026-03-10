@@ -1,0 +1,2 @@
+/usr/bin/ar qc libTXGraphics.a CMakeFiles/TXGraphics.dir/src/render_engine.cpp.o
+/usr/bin/ranlib libTXGraphics.a

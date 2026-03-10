@@ -1,0 +1,2 @@
+/usr/bin/ar qc libTXJson.a CMakeFiles/TXJson.dir/src/json_parser.cpp.o
+/usr/bin/ranlib libTXJson.a

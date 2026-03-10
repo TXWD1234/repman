@@ -1,0 +1,2 @@
+/usr/bin/ar qc libTXData.a CMakeFiles/TXData.dir/src/parted_arr.cpp.o
+/usr/bin/ranlib libTXData.a

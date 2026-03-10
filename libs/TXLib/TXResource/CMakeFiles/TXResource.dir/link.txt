@@ -1,0 +1,2 @@
+/usr/bin/ar qc libTXResource.a CMakeFiles/TXResource.dir/src/detail.cpp.o
+/usr/bin/ranlib libTXResource.a
