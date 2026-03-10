@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include "tx/map.h"
 #include "tx/json.h"
 #include "tx/resource.h"
 
