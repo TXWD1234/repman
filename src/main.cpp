@@ -17,8 +17,10 @@ int main(int argc, char* argv[]) {
 		}
 	} else {
 		if (root.exist(argv[1])) {
-			string cmd = "code ";
+			string cmd = "code \"";
 			cmd.append(root[argv[1]].get<string>());
+			cmd.push_back('"');
+			cout << cmd << endl;
 			system(cmd.c_str());
 		} else {
 			cout << "entry not found.\n";
