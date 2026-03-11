@@ -4,6 +4,7 @@
 // File: json_parser.cpp
 
 #include "impl/json_parser.h"
+#include "escape_parser.hpp"
 
 namespace tx {
 
@@ -164,7 +165,7 @@ std::string JsonParser::parseString__impl(const std::string& str, int& index) { 
 	} while (isEscapedCharacter_impl(str, index++));
 
 	//return { tempIndex, index++ };
-	return str.substr(tempIndex, index - tempIndex - 1);
+	return EscapeParser::apply(std::string_view(str.data() + tempIndex, index - tempIndex - 1));
 	// after this function returns, index should be at the index after ", which should be a comma: , or a colon: :
 }
 void JsonParser::throw_impl(int index) {

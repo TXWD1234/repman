@@ -99,7 +99,7 @@ public:
 		}
 		config = tx::parseJson(tx::readWholeFileText(configPath));
 
-		textEditor = config["defaultTextEditor"].get<std::string>();
+		command = config["defaultCommand"].get<std::string>();
 	}
 
 	// --help
@@ -133,9 +133,10 @@ public:
 
 private:
 	enum class Flag {
-		SetTextEditor, // --editor
+		SetCommand, // --command
 		Help,
-		List
+		List,
+		ListCmd
 	};
 
 private:
@@ -143,13 +144,16 @@ private:
 	tx::JsonObject config;
 
 	// runtime variables
-	std::string textEditor;
+	std::string command;
 
 	void run_impl(std::string filePath) {
-		std::string cmd = textEditor;
-		cmd.append(" \"");
-		cmd.append(filePath);
-		cmd.push_back('"');
+		std::string cmd = command;
+		size_t index = cmd.find("$FILE");
+		if (index == std::string::npos) {
+			cout << "Invalid command: \"" << cmd << "\": Command didn't include `$FILE`.";
+			return;
+		}
+		cmd.replace(index, 5, filePath);
 		system(cmd.c_str());
 	}
 
@@ -161,18 +165,21 @@ private:
 		case Flag::List:
 			list();
 			return 1;
-		case Flag::SetTextEditor:
+		case Flag::ListCmd:
+			listCmd();
+			return 1;
+		case Flag::SetCommand:
 			if (args.empty()) {
-				cout << "--editor requires a value\n";
+				cout << "--command requires a value\n";
 				return 1;
 			}
 			const string& name = args[0];
-			const tx::JsonObject editors = config["editors"].get<tx::JsonObject>();
+			const tx::JsonObject editors = config["commands"].get<tx::JsonObject>();
 			if (!editors.exist(name)) {
-				cout << "Unknown editor: \"" << name << "\"\nterminating...\n";
+				cout << "Unknown command: \"" << name << "\"\nterminating...\n";
 				return 1;
 			}
-			textEditor = editors[name].get<std::string>();
+			command = editors[name].get<std::string>();
 			index += 2;
 		}
 		return 0;
@@ -188,21 +195,29 @@ private:
 
 	// functionalities
 
-	// list all entries
+	// list all token entries
 	void list() {
 		for (int i = 0; i < data.size(); i++) {
 			cout << '"' << data.atIndex(i).k() << '"' << ": \"" << data.atIndex(i).v().get<string>() << "\"\n";
 		}
 	}
+	// list all commands
+	void listCmd() {
+		tx::JsonObject commands = config["commands"].get<tx::JsonObject>();
+		for (int i = 0; i < commands.size(); i++) {
+			cout << '"' << commands.atIndex(i).k() << '"' << ": \"" << commands.atIndex(i).v().get<string>() << "\"\n";
+		}
+	}
 
 private: // hard coded data
 	inline static tx::KVMap<std::string, Flag> FlagMap = {
-		{ std::string("--editor"), Flag::SetTextEditor },
-		{ std::string("-e"), Flag::SetTextEditor },
+		{ std::string("--command"), Flag::SetCommand },
+		{ std::string("-c"), Flag::SetCommand },
 		{ std::string("--help"), Flag::Help },
 		{ std::string("-h"), Flag::Help },
 		{ std::string("--list"), Flag::List },
-		{ std::string("-l"), Flag::List }
+		{ std::string("-l"), Flag::List },
+		{ std::string("--list-cmd"), Flag::ListCmd }
 	};
 
 	inline static constexpr const char* DefaultContent_Data = R"({
@@ -210,13 +225,13 @@ private: // hard coded data
 	"data": "/home/TX_Jerry/.local/share/repman/data.json"
 })";
 	inline static constexpr const char* DefaultContent_Config = R"({
-	"defaultTextEditor": "code 2>/dev/null",
-	"editors": {
-		"Code": "code 2>/dev/null",
-		"code": "code 2>/dev/null",
-		"VSCode": "code 2>/dev/null",
-		"vscode": "code 2>/dev/null",
-		"nano": "nano"
+	"defaultCommand": "code 2>/dev/null \"$FILE\"",
+	"commands": {
+		"Code": "code 2>/dev/null \"$FILE\"",
+		"code": "code 2>/dev/null \"$FILE\"",
+		"VSCode": "code 2>/dev/null \"$FILE\"",
+		"vscode": "code 2>/dev/null \"$FILE\"",
+		"nano": "nano \"$FILE\""
 	}
 })";
 	inline static constexpr const char* HelpMessage = R"(repman - Report Manager
@@ -227,8 +242,10 @@ Register token at ~/.local/share/repman/data.json, or use `repman repman`.
 Use token to open the according file.
 
 Flags:
--h / --help		show the help message
--e / --editor	assign specific editor. edit options in ~/.config/repman/config.json or use `repman config` -> "Editors"
+-h / --help			show the help message
+-l / --list			show the registered token and their according file path
+     --list-cmd		show the registered command of launching
+-e / --editor		assign specific editor. edit options in ~/.config/repman/config.json or use `repman config` -> "Editors"
 )";
 };
 
