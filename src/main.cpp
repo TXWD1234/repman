@@ -210,7 +210,7 @@ private: // hard coded data
 	"data": "/home/TX_Jerry/.local/share/repman/data.json"
 })";
 	inline static constexpr const char* DefaultContent_Config = R"({
-	"defaultTextEditor": "code",
+	"defaultTextEditor": "code 2>/dev/null",
 	"editors": {
 		"Code": "code 2>/dev/null",
 		"code": "code 2>/dev/null",
