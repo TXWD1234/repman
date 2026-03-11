@@ -212,10 +212,10 @@ private: // hard coded data
 	inline static constexpr const char* DefaultContent_Config = R"({
 	"defaultTextEditor": "code",
 	"editors": {
-		"Code": "code",
-		"code": "code",
-		"VSCode": "code",
-		"vscode": "code",
+		"Code": "code 2>/dev/null",
+		"code": "code 2>/dev/null",
+		"VSCode": "code 2>/dev/null",
+		"vscode": "code 2>/dev/null",
 		"nano": "nano"
 	}
 })";
