@@ -11,7 +11,7 @@ Use token to open the according file.
 `-h` / --help`			| show the help message
 `-l` / `--list`			| show the registered token and their according file path
 `--list-cmd`			| show the registered command of launching
-`-x` / `--command`		| assign specific editor. edit options in ~/.config/repman/config.json or use `repman config` -> "Editors"
+`-c` / `--command`		| assign specific editor. edit options in ~/.config/repman/config.json or use `repman config` -> "Editors"
 
 ## Config File:
 ### commands
