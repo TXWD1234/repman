@@ -231,7 +231,8 @@ private: // hard coded data
 		"code": "code 2>/dev/null \"$FILE\"",
 		"VSCode": "code 2>/dev/null \"$FILE\"",
 		"vscode": "code 2>/dev/null \"$FILE\"",
-		"nano": "nano \"$FILE\""
+		"nano": "nano \"$FILE\"",
+		"clip": "echo \"$FILE\" | wl-copy"
 	}
 })";
 	inline static constexpr const char* HelpMessage = R"(repman - Report Manager
