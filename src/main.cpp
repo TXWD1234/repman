@@ -243,10 +243,10 @@ Register token at ~/.local/share/repman/data.json, or use `repman repman`.
 Use token to open the according file.
 
 Flags:
--h / --help			show the help message
--l / --list			show the registered token and their according file path
-     --list-cmd		show the registered command of launching
--c / --command		assign specific editor. edit options in ~/.config/repman/config.json or use `repman config` -> "Editors"
+-h / --help         show the help message
+-l / --list         show the registered token and their according file path
+     --list-cmd     show the registered command of launching
+-c / --command      assign specific editor. edit options in ~/.config/repman/config.json or use `repman config` -> "Editors"
 )";
 };
 
